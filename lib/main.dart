@@ -1,5 +1,6 @@
 import 'package:bingo/bingo.dart';
 import 'package:carvo/core/injection/injection.dart';
+import 'package:carvo/features/splash/data/models/user_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Bingo.setup();
   Injection.setUp();
+  Bingo.register<UserModel>((user) => UserModel.fromJson(user));
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }

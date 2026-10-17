@@ -6,10 +6,18 @@ class SignInRepo {
     try {
       UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       if (credential.user != null) {
-        return ApiResult.success(true);
+        if (credential.user!.emailVerified) {
+          await Future.delayed(Duration(seconds: 4));
+          return ApiResult.success(true);
+        } else {
+          await FirebaseAuth.instance.signOut();
+          return ApiResult.failure("Email not verified");
+        }
       } else {
         return ApiResult.failure("Something went wrong");
       }
+    } on FirebaseException catch (exception) {
+      return ApiResult.failure(exception.message.toString());
     } catch (exception) {
       return ApiResult.failure(exception.toString());
     }

@@ -26,6 +26,7 @@ class AppTheme {
       headlineSmall: AppTypography.headlineSmall,
       headlineMedium: AppTypography.headlineMedium,
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: AppColors.white, foregroundColor: AppColors.darkBlue),
     inputDecorationTheme: InputDecorationThemeData(
       filled: true,
       labelStyle: AppTypography.titleMedium.copyWith(color: AppColors.white),

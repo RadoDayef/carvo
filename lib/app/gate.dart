@@ -2,6 +2,7 @@ import 'package:bingo/bingo.dart';
 import 'package:carvo/core/injection/injection.dart';
 import 'package:carvo/core/shared/logic/visibility_cubit/visibility_cubit.dart';
 import 'package:carvo/features/auth/sign_in/logic/sign_in_cubit.dart';
+import 'package:carvo/features/splash/logic/splash_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,7 @@ class Gate extends StatelessWidget {
     if (Bingo.call<bool>("isFirstTime") ?? true) {
       return OnBoardingScreen();
     } else if (FirebaseAuth.instance.currentUser != null) {
-      return SplashScreen();
+      return BlocProvider(create: (context) => Injection.getIt<SplashCubit>(), child: SplashScreen());
     } else {
       return MultiBlocProvider(
         providers: [
