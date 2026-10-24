@@ -2,7 +2,7 @@ import 'package:carvo/core/network/api_result.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgetPasswordRepo {
-  Future<ApiResult<bool>> sedResetPasswordEmail(String email) async {
+  Future<ApiResult<bool>> sendResetPasswordEmail(String email) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       await Future.delayed(Duration(seconds: 4));

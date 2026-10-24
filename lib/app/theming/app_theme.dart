@@ -9,6 +9,7 @@ class AppTheme {
   static ThemeData theme = ThemeData(
     brightness: .dark,
     scaffoldBackgroundColor: AppColors.darkBlue,
+    appBarTheme: AppBarThemeData(backgroundColor: AppColors.transparent, surfaceTintColor: AppColors.transparent, foregroundColor: AppColors.white),
     textTheme: TextTheme(
       bodyLarge: AppTypography.bodyLarge,
       bodySmall: AppTypography.bodySmall,

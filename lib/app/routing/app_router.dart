@@ -1,8 +1,12 @@
 import 'package:carvo/core/injection/injection.dart';
 import 'package:carvo/core/shared/logic/visibility_cubit/visibility_cubit.dart';
+import 'package:carvo/features/add_car/logic/add_car_cubit/add_car_cubit.dart';
+import 'package:carvo/features/add_car/logic/add_car_image_cubit/add_car_image_cubit.dart';
+import 'package:carvo/features/add_car/ui/add_car_screen.dart';
 import 'package:carvo/features/auth/forget_password/logic/forget_password_cubit.dart';
 import 'package:carvo/features/auth/sign_in/logic/sign_in_cubit.dart';
 import 'package:carvo/features/auth/sign_up/logic/sign_up_cubit.dart';
+import 'package:carvo/features/details/ui/details_screen.dart';
 import 'package:carvo/features/profile/logic/profile_cars_cubit/profile_cars_cubit.dart';
 import 'package:carvo/features/profile/ui/profile_screen.dart';
 import 'package:carvo/features/splash/logic/splash_cubit.dart';
@@ -51,10 +55,22 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider(create: (context) => Injection.getIt<SplashCubit>(), child: SplashScreen()),
         );
+      case AppRoutes.addCar:
+        return MaterialPageRoute<bool?>(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => Injection.getIt<AddCarCubit>()),
+              BlocProvider(create: (context) => Injection.getIt<AddCarImageCubit>()),
+            ],
+            child: AddCarScreen(),
+          ),
+        );
       case AppRoutes.profile:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(create: (context) => Injection.getIt<ProfileCarsCubit>(), child: ProfileScreen()),
         );
+      case AppRoutes.details:
+        return MaterialPageRoute(builder: (context) => DetailsScreen());
       case AppRoutes.onBoarding:
         return MaterialPageRoute(builder: (context) => OnBoardingScreen());
       case AppRoutes.forgetPassword:

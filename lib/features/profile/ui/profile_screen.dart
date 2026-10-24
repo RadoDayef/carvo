@@ -1,5 +1,6 @@
 import 'package:bingo/bingo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carvo/app/routing/app_routes.dart';
 import 'package:carvo/app/theming/app_colors.dart';
 import 'package:carvo/core/extensions/context_extension.dart';
 import 'package:carvo/core/extensions/num_extension.dart';
@@ -17,11 +18,20 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final UserModel user = Bingo.call<UserModel>("user")!;
+    final ProfileCarsCubit cubit = context.read<ProfileCarsCubit>();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          bool? addResult = await Navigator.of(context).pushNamed(AppRoutes.addCar);
+          if (addResult ?? false) {
+            cubit.getProfileCars();
+          }
+        },
+        child: Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: .all(24),
           child: Column(
             mainAxisAlignment: .center,
             children: [
@@ -47,9 +57,9 @@ class ProfileScreen extends StatelessWidget {
                       success: (cars) {
                         if (cars.isNotEmpty) {
                           return ListView.separated(
-                            shrinkWrap: true,
+                            // shrinkWrap: true,
                             itemCount: cars.length,
-                            physics: NeverScrollableScrollPhysics(),
+                            // physics: NeverScrollableScrollPhysics(),
                             separatorBuilder: (_, _) => 16.vGap,
                             itemBuilder: (_, int index) => CarWidget(cars[index]),
                           );

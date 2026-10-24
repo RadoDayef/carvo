@@ -15,6 +15,7 @@ class ProfileCarsCubit extends Cubit<ProfileCarsState> {
   }
 
   void getProfileCars() async {
+    emit(ProfileCarsState.loading());
     ApiResult<List<CarModel>> result = await _repo.getUserCars();
     result.when(success: (data) => emit(ProfileCarsState.success(data)), failure: (message) => emit(ProfileCarsState.failure(message)));
   }

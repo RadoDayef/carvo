@@ -18,7 +18,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
   void forgetPassword() async {
     if (formKey.currentState!.validate()) {
       emit(ForgetPasswordState.loading());
-      ApiResult<bool> result = await _repo.sedResetPasswordEmail(emailController.text);
+      ApiResult<bool> result = await _repo.sendResetPasswordEmail(emailController.text);
       result.when(success: (_) => emit(ForgetPasswordState.success()), failure: (message) => emit(ForgetPasswordState.failure(message)));
     }
   }

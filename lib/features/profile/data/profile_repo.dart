@@ -7,7 +7,7 @@ class ProfileRepo {
   Future<ApiResult<List<CarModel>>> getUserCars() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance.collection("cars").where("ownerUid", isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
-      List<CarModel> cars = querySnapshot.docs.map((car) => CarModel.fromJson(car.data())).toList();
+      List<CarModel> cars = querySnapshot.docs.map((car) => CarModel.fromJson(car.data(), car.id)).toList();
       await Future.delayed(Duration(seconds: 4));
       return ApiResult.success(cars);
     } catch (exception) {

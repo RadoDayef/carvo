@@ -1,4 +1,7 @@
 import 'package:carvo/core/shared/logic/visibility_cubit/visibility_cubit.dart';
+import 'package:carvo/features/add_car/data/add_car_repo.dart';
+import 'package:carvo/features/add_car/logic/add_car_cubit/add_car_cubit.dart';
+import 'package:carvo/features/add_car/logic/add_car_image_cubit/add_car_image_cubit.dart';
 import 'package:carvo/features/auth/forget_password/data/forget_password_repo.dart';
 import 'package:carvo/features/auth/forget_password/logic/forget_password_cubit.dart';
 import 'package:carvo/features/auth/sign_in/data/sign_in_repo.dart';
@@ -16,6 +19,7 @@ class Injection {
 
   static void setUp() {
     /// Repos
+    getIt.registerFactory<AddCarRepo>(() => AddCarRepo());
     getIt.registerFactory<SignUpRepo>(() => SignUpRepo());
     getIt.registerFactory<SplashRepo>(() => SplashRepo());
     getIt.registerFactory<SignInRepo>(() => SignInRepo());
@@ -24,6 +28,8 @@ class Injection {
 
     /// Cubits
     getIt.registerFactory<VisibilityCubit>(() => VisibilityCubit());
+    getIt.registerLazySingleton<AddCarImageCubit>(() => AddCarImageCubit());
+    getIt.registerLazySingleton<AddCarCubit>(() => AddCarCubit(getIt<AddCarRepo>()));
     getIt.registerLazySingleton<SplashCubit>(() => SplashCubit(getIt<SplashRepo>()));
     getIt.registerLazySingleton<SignUpCubit>(() => SignUpCubit(getIt<SignUpRepo>()));
     getIt.registerLazySingleton<SignInCubit>(() => SignInCubit(getIt<SignInRepo>()));
