@@ -76,15 +76,23 @@ class AddCarScreen extends StatelessWidget {
                     state.whenOrNull(success: () => Navigator.of(context).pop(true), failure: (message) => message.showToast);
                   },
                   builder: (context, state) {
-                    return ElevatedButton(
-                      onPressed: state.maybeWhen(orElse: () => cubit.addCar, loading: () => () {}),
-                      child: state.maybeWhen(
-                        orElse: () => Text(
-                          "Upload Car",
-                          style: theme.textTheme.titleMedium!.copyWith(fontWeight: .bold, color: AppColors.darkBlue),
-                        ),
-                        loading: () => LoadingAnimationWidget.threeRotatingDots(color: AppColors.darkBlue, size: 24),
-                      ),
+                    return BlocBuilder<AddCarImageCubit, File?>(
+                      builder: (context, image) {
+                        return ElevatedButton(
+                          onPressed: state.maybeWhen(
+                            orElse: () =>
+                                () => cubit.addCar(image),
+                            loading: () => () {},
+                          ),
+                          child: state.maybeWhen(
+                            orElse: () => Text(
+                              "Upload Car",
+                              style: theme.textTheme.titleMedium!.copyWith(fontWeight: .bold, color: AppColors.darkBlue),
+                            ),
+                            loading: () => LoadingAnimationWidget.threeRotatingDots(color: AppColors.darkBlue, size: 24),
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:carvo/core/extensions/string_extension.dart';
 import 'package:carvo/core/network/api_result.dart';
 import 'package:carvo/features/profile/data/models/car_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddCarRepo {
   Future<ApiResult<bool>> createNewCar(CarModel car, File image) async {
@@ -24,7 +26,12 @@ class AddCarRepo {
   }
 
   Future<ApiResult<String>> uploadCarImage(File image) async {
-    try {} catch (exception) {
+    try {
+      final String path = image.path.split("/").last;
+      final String response = await Supabase.instance.client.storage.from("carImages").upload(path, image, fileOptions: FileOptions(upsert: true));
+      final String publicUrl = Supabase.instance.client.storage.from("carImages").getPublicUrl(response);
+      return ApiResult.success(publicUrl.filterUrl);
+    } catch (exception) {
       return ApiResult.failure(exception.toString());
     }
   }

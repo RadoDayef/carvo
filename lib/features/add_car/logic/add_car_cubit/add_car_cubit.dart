@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:carvo/core/extensions/string_extension.dart';
 import 'package:carvo/core/network/api_result.dart';
 import 'package:carvo/features/add_car/data/add_car_repo.dart';
 import 'package:carvo/features/profile/data/models/car_model.dart';
@@ -18,10 +21,14 @@ class AddCarCubit extends Cubit<AddCarState> {
   TextEditingController brandController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  void addCar() async {
-    emit(AddCarState.loading());
-    CarModel car = CarModel(uid: "", brand: brandController.text, image: "", model: modelController.text, description: descriptionController.text, ownerUid: FirebaseAuth.instance.currentUser!.uid);
-    ApiResult<bool> result = await _repo.createNewCar(car);
-    result.when(success: (_) => emit(AddCarState.success()), failure: (message) => emit(AddCarState.failure(message)));
+  void addCar(File? image) async {
+    if (image != null) {
+      emit(AddCarState.loading());
+      CarModel car = CarModel(uid: "", brand: brandController.text, image: "", model: modelController.text, description: descriptionController.text, ownerUid: FirebaseAuth.instance.currentUser!.uid);
+      ApiResult<bool> result = await _repo.createNewCar(car, image);
+      result.when(success: (_) => emit(AddCarState.success()), failure: (message) => emit(AddCarState.failure(message)));
+    } else {
+      "Image can't be null".showToast;
+    }
   }
 }
