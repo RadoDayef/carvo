@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:carvo/core/extensions/string_extension.dart';
 import 'package:carvo/core/network/api_result.dart';
-import 'package:carvo/features/profile/data/models/car_model.dart';
+import 'package:carvo/features/home/data/models/car_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -36,3 +36,12 @@ class AddCarRepo {
     }
   }
 }
+
+/// Add Car To Firebase
+///   - Brand
+///   - Model
+///   - Image
+///   - Owner UID
+///   - Description
+
+/// Upload Car Image To Supabase And Get Public URL

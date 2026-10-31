@@ -10,11 +10,11 @@ class SplashCubit extends Cubit<SplashState> {
   final SplashRepo _repo;
 
   SplashCubit(this._repo) : super(SplashState.loading()) {
-    getAndSaveUserData();
+    getUserData();
   }
 
-  void getAndSaveUserData() async {
-    ApiResult<bool> result = await _repo.getUserData();
+  void getUserData() async {
+    ApiResult<bool> result = await _repo.getAndSaveUserData();
     result.when(success: (_) => emit(SplashState.success()), failure: (message) => emit(SplashState.failure(message)));
   }
 }

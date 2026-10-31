@@ -5,13 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SplashRepo {
-  Future<ApiResult<bool>> getUserData() async {
+  Future<ApiResult<bool>> getAndSaveUserData() async {
     try {
       DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
       if (userDoc.exists) {
         UserModel user = UserModel.fromJson(userDoc.data()!);
         await Bingo.mark("user", user);
-        await Future.delayed(Duration(seconds: 4));
+        await Future.delayed(Duration(seconds: 2));
         return ApiResult.success(true);
       } else {
         return ApiResult.failure("User Not Found");

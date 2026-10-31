@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:carvo/core/extensions/string_extension.dart';
 import 'package:carvo/core/network/api_result.dart';
 import 'package:carvo/features/add_car/data/add_car_repo.dart';
-import 'package:carvo/features/profile/data/models/car_model.dart';
+import 'package:carvo/features/home/data/models/car_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

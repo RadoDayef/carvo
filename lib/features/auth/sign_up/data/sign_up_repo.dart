@@ -10,7 +10,7 @@ class SignUpRepo {
         credential.user!.sendEmailVerification();
         await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set({"uid": credential.user!.uid, "email": email, "firstName": firstName, "lastName": lastName});
         FirebaseAuth.instance.signOut();
-        await Future.delayed(Duration(seconds: 4));
+        await Future.delayed(Duration(seconds: 2));
         return ApiResult.success(true);
       } else {
         return ApiResult.failure("Couldn't Sign Up With Email & Password");

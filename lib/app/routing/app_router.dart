@@ -7,7 +7,9 @@ import 'package:carvo/features/auth/forget_password/logic/forget_password_cubit.
 import 'package:carvo/features/auth/sign_in/logic/sign_in_cubit.dart';
 import 'package:carvo/features/auth/sign_up/logic/sign_up_cubit.dart';
 import 'package:carvo/features/details/ui/details_screen.dart';
+import 'package:carvo/features/home/logic/home_cubit.dart';
 import 'package:carvo/features/profile/logic/profile_cars_cubit/profile_cars_cubit.dart';
+import 'package:carvo/features/profile/logic/sign_out_cubit/sign_out_cubit.dart';
 import 'package:carvo/features/profile/ui/profile_screen.dart';
 import 'package:carvo/features/splash/logic/splash_cubit.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,9 @@ class AppRouter {
       case AppRoutes.gate:
         return MaterialPageRoute(builder: (context) => Gate());
       case AppRoutes.home:
-        return MaterialPageRoute(builder: (context) => HomeScreen());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(create: (context) => Injection.getIt<HomeCubit>(), child: HomeScreen()),
+        );
       case AppRoutes.signIn:
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
@@ -67,7 +71,13 @@ class AppRouter {
         );
       case AppRoutes.profile:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(create: (context) => Injection.getIt<ProfileCarsCubit>(), child: ProfileScreen()),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => Injection.getIt<SignOutCubit>()),
+              BlocProvider(create: (context) => Injection.getIt<ProfileCarsCubit>()),
+            ],
+            child: ProfileScreen(),
+          ),
         );
       case AppRoutes.details:
         return MaterialPageRoute(builder: (context) => DetailsScreen());

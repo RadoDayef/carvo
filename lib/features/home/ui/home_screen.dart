@@ -4,8 +4,11 @@ import 'package:carvo/app/routing/app_routes.dart';
 import 'package:carvo/app/theming/app_colors.dart';
 import 'package:carvo/core/extensions/context_extension.dart';
 import 'package:carvo/core/extensions/num_extension.dart';
+import 'package:carvo/features/home/logic/home_cubit.dart';
+import 'package:carvo/features/home/ui/widgets/home_car_widget.dart';
 import 'package:carvo/features/splash/data/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -55,11 +58,35 @@ class HomeScreen extends StatelessWidget {
               ),
               24.vGap,
               Expanded(
-                child: ListView.separated(
-                  itemCount: 15,
-                  separatorBuilder: (_, _) => 16.vGap,
-                  itemBuilder: (_, int index) {
-                    return Container(height: 50, color: Colors.blue);
+                child: BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    return state.when(
+                      loading: () => Center(child: LoadingAnimationWidget.threeRotatingDots(color: AppColors.white, size: 24)),
+                      success: (cars) {
+                        if (cars.isNotEmpty) {
+                          return ListView.separated(itemCount: cars.length, separatorBuilder: (_, _) => 16.vGap, itemBuilder: (_, int index) => HomeCarWidget(cars[index]));
+                        } else {
+                          return Column(
+                            mainAxisAlignment: .center,
+                            children: [
+                              Icon(Icons.car_crash, color: AppColors.white, size: 48),
+                              8.vGap,
+                              Text("No Cars Found", style: theme.textTheme.titleLarge),
+                            ],
+                          );
+                        }
+                      },
+                      failure: (message) {
+                        return Column(
+                          mainAxisAlignment: .center,
+                          children: [
+                            Icon(Icons.warning_rounded, color: AppColors.white, size: 48),
+                            8.vGap,
+                            Text(message, style: theme.textTheme.titleLarge),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
               ),

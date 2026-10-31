@@ -22,7 +22,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     if (formKey.currentState!.validate()) {
       emit(SignUpState.loading());
       ApiResult<bool> result = await _repo.signUpWithEmailAndPassword(emailController.text, passwordController.text, firstName: firstNameController.text, lastName: lastNameController.text);
-      result.when(success: (data) => emit(SignUpState.success()), failure: (message) => emit(SignUpState.failure(message)));
+      result.when(success: (_) => emit(SignUpState.success()), failure: (message) => emit(SignUpState.failure(message)));
     }
   }
 }

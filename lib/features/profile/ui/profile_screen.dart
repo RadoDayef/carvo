@@ -4,8 +4,10 @@ import 'package:carvo/app/routing/app_routes.dart';
 import 'package:carvo/app/theming/app_colors.dart';
 import 'package:carvo/core/extensions/context_extension.dart';
 import 'package:carvo/core/extensions/num_extension.dart';
+import 'package:carvo/core/extensions/string_extension.dart';
 import 'package:carvo/features/profile/logic/profile_cars_cubit/profile_cars_cubit.dart';
-import 'package:carvo/features/profile/ui/widgets/car_widget.dart';
+import 'package:carvo/features/profile/logic/sign_out_cubit/sign_out_cubit.dart';
+import 'package:carvo/features/profile/ui/widgets/profile_car_widget.dart';
 import 'package:carvo/features/splash/data/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +20,32 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final UserModel user = Bingo.call<UserModel>("user")!;
+    final SignOutCubit signOutCubit = context.read<SignOutCubit>();
     final ProfileCarsCubit cubit = context.read<ProfileCarsCubit>();
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Text("Profile"),
+        actions: [
+          BlocConsumer<SignOutCubit, SignOutState>(
+            listener: (context, state) {
+              state.whenOrNull(success: () => Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.signIn, (route) => false), failure: (message) => message.showToast);
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                loading: () => LoadingAnimationWidget.threeRotatingDots(color: AppColors.white, size: 24),
+                orElse: () {
+                  return InkWell(
+                    onTap: signOutCubit.signOut,
+                    child: Icon(Icons.logout, color: AppColors.white),
+                  );
+                },
+              );
+            },
+          ),
+          12.hGap,
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           bool? addResult = await Navigator.of(context).pushNamed(AppRoutes.addCar);
@@ -56,13 +82,7 @@ class ProfileScreen extends StatelessWidget {
                       loading: () => Center(child: LoadingAnimationWidget.threeRotatingDots(color: AppColors.white, size: 32)),
                       success: (cars) {
                         if (cars.isNotEmpty) {
-                          return ListView.separated(
-                            // shrinkWrap: true,
-                            itemCount: cars.length,
-                            // physics: NeverScrollableScrollPhysics(),
-                            separatorBuilder: (_, _) => 16.vGap,
-                            itemBuilder: (_, int index) => CarWidget(cars[index]),
-                          );
+                          return ListView.separated(itemCount: cars.length, separatorBuilder: (_, _) => 16.vGap, itemBuilder: (_, int index) => ProfileCarWidget(cars[index]));
                         } else {
                           return Column(
                             mainAxisAlignment: .center,

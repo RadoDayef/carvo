@@ -20,7 +20,7 @@ class SignInCubit extends Cubit<SignInState> {
     if (formKey.currentState!.validate()) {
       emit(SignInState.loading());
       ApiResult<bool> result = await _repo.signInWithEmailAndPassword(emailController.text, passwordController.text);
-      result.when(success: (data) => emit(SignInState.success()), failure: (message) => emit(SignInState.failure(message)));
+      result.when(success: (_) => emit(SignInState.success()), failure: (message) => emit(SignInState.failure(message)));
     }
   }
 }

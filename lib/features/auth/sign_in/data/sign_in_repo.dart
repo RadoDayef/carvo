@@ -7,7 +7,7 @@ class SignInRepo {
       UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       if (credential.user != null) {
         if (credential.user!.emailVerified) {
-          await Future.delayed(Duration(seconds: 4));
+          await Future.delayed(Duration(seconds: 2));
           return ApiResult.success(true);
         } else {
           await FirebaseAuth.instance.signOut();
